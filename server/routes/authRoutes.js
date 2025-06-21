@@ -1,10 +1,5 @@
 import express from "express";
-import {
-  registerUser,
-  loginUser,
-  logoutUser,
-} from "../controllers/authController.js";
-import authenticateToken from "../middleware/auth.js";
+import { registerUser, loginUser } from "../controllers/authController.js";
 
 const router = express.Router();
 
@@ -12,7 +7,7 @@ const router = express.Router();
 router.post("/register", registerUser);
 router.post("/login", loginUser);
 
-// Protected route (requires token)
-router.post("/logout", authenticateToken, logoutUser);
+// Admin register route
+router.post("/admin/register", registerUser);
 
 export default router;
