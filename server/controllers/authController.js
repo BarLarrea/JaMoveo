@@ -13,7 +13,7 @@ export const registerUser = async (req, res) => {
         email,
         password,
         adminCode
-    } = req.body;
+    } = req.body
 
     // Check if the request is for admin registration
     const isAdminRequest = req.originalUrl.includes("/admin/register");
