@@ -17,7 +17,8 @@ export const registerUser = async (req, res) => {
 
     // Check if the request is for admin registration
     const isAdminRequest = req.originalUrl.includes("/admin/register");
-    const isAdminFlag = isAdminRequest && adminCode === process.env.ADMIN_SECRET;
+    const isAdminFlag =
+        isAdminRequest && adminCode === process.env.ADMIN_SECRET;
 
     // Basic presence check
     if (!firstName || !lastName || !email || !password) {
@@ -48,6 +49,13 @@ export const registerUser = async (req, res) => {
         return res
             .status(400)
             .json({ message: "Instrument is required for non-singers" });
+    }
+
+     // Ensure instrument is not provided along with isSinger
+     if (isSinger && instrument && typeof instrument === "string" && instrument.trim() !== "") {
+        return res.status(400).json({
+          message: "User cannot be both a singer and an instrumentalist"
+        });
     }
 
     try {
