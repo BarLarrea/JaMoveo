@@ -3,6 +3,8 @@ import express from "express";
 import http from "http";
 import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
+import { Server } from "socket.io";
+import handleSocket from "./sockets/songSocket.js";
 
 dotenv.config();
 
@@ -27,3 +29,16 @@ connectDB(() => {
 
 // Routes setup
 app.use("/api/auth", authRoutes);
+
+// Real time state
+let currentSong = null;
+
+// Socket.io setup
+const io = new Server(server, {
+    cors: {
+        origin: "*",
+        methods: ["GET", "POST"]
+    }
+});
+
+handleSocket(io);
