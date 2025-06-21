@@ -8,12 +8,16 @@ export const registerUser = async (req, res) => {
     const {
         firstName,
         lastName,
-        isAdmin,
         isSinger,
         instrument,
         email,
-        password
+        password,
+        adminCode
     } = req.body;
+
+    // Check if the request is for admin registration
+    const isAdminRequest = req.originalUrl.includes("/admin/register");
+    const isAdminFlag = isAdminRequest && adminCode === process.env.ADMIN_SECRET;
 
     // Basic presence check
     if (!firstName || !lastName || !email || !password) {
@@ -39,8 +43,8 @@ export const registerUser = async (req, res) => {
             .json({ message: "Password must be at least 8 characters long" });
     }
 
-    // Instrument required for non-singers
-    if (!isSinger && !instrument) {
+    // Instrument required for non-singers (admin can skip this)
+    if (!isSinger && !instrument && !isAdminFlag) {
         return res
             .status(400)
             .json({ message: "Instrument is required for non-singers" });
@@ -54,7 +58,7 @@ export const registerUser = async (req, res) => {
         const newUser = new User({
             firstName,
             lastName,
-            isAdmin: Boolean(isAdmin),
+            isAdmin: isAdminFlag,
             isSinger: Boolean(isSinger),
             instrument: isSinger ? null : instrument,
             email: normalizedEmail,
@@ -62,10 +66,9 @@ export const registerUser = async (req, res) => {
         });
 
         const token = generateAccessToken(newUser);
-
         const savedUser = await newUser.save();
 
-        // Respond
+        // Response
         res.status(201).json({
             message: "User registered successfully",
             user: {
