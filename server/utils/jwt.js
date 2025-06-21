@@ -4,12 +4,12 @@ const secret = process.env.ACCESS_JWT_SECRET;
 const expiration = process.env.ACCESS_JWT_EXPIRATION;
 
 function generateAccessToken(user) {
-    if (!user || !user.id) {
+    if (!user) {
         throw new Error("Invalid user payload for token generation");
     }
     const payload = {
-        userId: user.id,
-        role: user.role,
+        userId: user._id,
+        isAdmin: user.isAdmin,
         isSinger: user.isSinger,
         instrument: user.isSinger ? null : user.instrument
     };
@@ -19,10 +19,13 @@ function generateAccessToken(user) {
 
 export const verifyAccessToken = (token) => {
     try {
-        return jwt.verify(token, ACCESS_TOKEN_SECRET);
+        return jwt.verify(token, secret);
     } catch (err) {
         return null;
     }
 };
 
-export default (generateAccessToken, verifyAccessToken);
+export default {
+    generateAccessToken,
+    verifyAccessToken
+};
