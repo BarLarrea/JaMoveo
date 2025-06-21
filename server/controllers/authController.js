@@ -1,6 +1,6 @@
 import User from "../models/userModel.js";
 import bcrypt from "bcryptjs";
-import generateAccessToken from "../utils/jwt.js";
+import { generateAccessToken } from "../utils/jwt.js";
 
 const emailRegex = /^\S+@\S+\.\S+$/;
 
@@ -33,10 +33,10 @@ export const registerUser = async (req, res) => {
     }
 
     // Password strength check
-    if (password.length < 6) {
+    if (password.length < 8) {
         return res
             .status(400)
-            .json({ message: "Password must be at least 6 characters long" });
+            .json({ message: "Password must be at least 8 characters long" });
     }
 
     // Instrument required for non-singers
@@ -61,10 +61,9 @@ export const registerUser = async (req, res) => {
             password: hashedPassword
         });
 
-        const savedUser = await newUser.save();
+        const token = generateAccessToken(newUser);
 
-        // Generate JWT
-        const token = generateAccessToken({ savedUser });
+        const savedUser = await newUser.save();
 
         // Respond
         res.status(201).json({
@@ -80,7 +79,11 @@ export const registerUser = async (req, res) => {
             token
         });
     } catch (error) {
-        res.status(500).json({ message: "Error registering user", error });
+        console.error("Registration error:", error);
+        res.status(500).json({
+            message: "Error registering user",
+            error: error.message || error
+        });
     }
 };
 
@@ -89,7 +92,9 @@ export const loginUser = async (req, res) => {
 
     // Basic presence check
     if (!email || !password) {
-        return res.status(400).json({ message: "Email and password are required" });
+        return res
+            .status(400)
+            .json({ message: "Email and password are required" });
     }
 
     if (!emailRegex.test(email)) {
@@ -102,17 +107,21 @@ export const loginUser = async (req, res) => {
         // Find user by email
         const user = await User.findOne({ email: normalizedEmail });
         if (!user) {
-            return res.status(404).json({ message: "Email or password is incorrect" });
+            return res
+                .status(404)
+                .json({ message: "Email or password is incorrect" });
         }
 
         // Verify password
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
-            return res.status(401).json({ message: "Email or password is incorrect" });
+            return res
+                .status(401)
+                .json({ message: "Email or password is incorrect" });
         }
 
         // Generate JWT
-        const token = generateAccessToken({ user });
+        const token = generateAccessToken(user);
 
         // Respond
         res.status(200).json({
