@@ -4,6 +4,7 @@ import { registerUser } from "../utils/auth";
 import { useNavigate } from "react-router-dom";
 import RegisterForm from "../components/forms/RegisterForm";
 import Layout from "../components/layout/Layout";
+import { Link } from "react-router-dom";
 
 export default function RegisterPage() {
     const [loading, setLoading] = useState(false);
@@ -82,7 +83,7 @@ export default function RegisterPage() {
                     Create your account
                 </h2>
                 <p className='mt-2 text-gray-600'>
-                    Please, fill in your details to join
+                    Please, fill in your details to register
                 </p>
             </div>
             <RegisterForm
@@ -100,6 +101,17 @@ export default function RegisterPage() {
                 setPassword={setPassword}
                 handleSubmit={handleSubmit}
             />
+            <div className='mt-4 text-center'>
+                <p className='text-gray-600'>
+                    Already have an account?{" "}
+                    <Link
+                        to='/login'
+                        className='text-blue-500 hover:underline'
+                    >
+                        Login here
+                    </Link>
+                </p>
+            </div>
         </Layout>
     );
 }
