@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { validateEmail, validatePassword } from "../utils/validation";
+import { useState } from "react";
+import { validateEmail } from "../utils/validation";
 import { loginUser } from "../utils/auth";
 import { useNavigate } from "react-router-dom";
 import LoginForm from "../components/forms/LoginForm";
@@ -11,8 +11,6 @@ export default function LoginPage() {
     const [password, setPassword] = useState("");
 
     const navigate = useNavigate();
-
-    useEffect(() => {}, [email, password]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();

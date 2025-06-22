@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useLocation } from "react";
 import { validateEmail, validatePassword } from "../utils/validation";
 import { registerUser } from "../utils/auth";
 import { useNavigate } from "react-router-dom";
@@ -16,15 +16,8 @@ export default function RegisterPage() {
     const [password, setPassword] = useState("");
 
     const navigate = useNavigate();
-
-    useEffect(() => {}, [
-        firstName,
-        lastName,
-        isSinger,
-        instrument,
-        email,
-        password
-    ]);
+    const location = useLocation();
+    const isAdmin = location.pathname.includes("/admin");
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -63,7 +56,8 @@ export default function RegisterPage() {
             isSinger,
             instrument,
             email,
-            password
+            password,
+            isAdmin
         });
 
         if (response?.success) {

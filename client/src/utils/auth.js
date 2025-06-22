@@ -6,20 +6,19 @@ export const registerUser = async ({
     isSinger,
     instrument,
     email,
-    password
+    password,
+    isAdmin
 }) => {
+    const url = isAdmin ? "/api/auth/admin/register" : "/api/auth/register";
     try {
-        const response = await axios.post(
-            "http://localhost:3000/api/auth/register",
-            {
-                firstName,
-                lastName,
-                isSinger,
-                instrument,
-                email,
-                password
-            }
-        );
+        const response = await axios.post(`http://localhost:3000${url}`, {
+            firstName,
+            lastName,
+            isSinger,
+            instrument,
+            email,
+            password
+        });
 
         if (response.status === 201) {
             return { success: true, data: response.data };
