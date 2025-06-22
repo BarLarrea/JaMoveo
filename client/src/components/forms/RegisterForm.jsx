@@ -30,12 +30,16 @@ export default function RegisterForm({
     setEmail,
     password,
     setPassword,
-    handleSubmit
+    handleSubmit,
+    isAdmin,
+    adminCode,
+    setAdminCode
 }) {
     return (
         <form
             onSubmit={handleSubmit}
             className='space-y-6'
+            autoComplete='on'
         >
             <TextInput
                 label='Email'
@@ -44,6 +48,7 @@ export default function RegisterForm({
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder='Enter your email'
+                autoComplete='email'
             />
 
             <TextInput
@@ -52,6 +57,7 @@ export default function RegisterForm({
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
                 placeholder='Enter your first name'
+                autoComplete='given-name'
             />
 
             <TextInput
@@ -60,6 +66,7 @@ export default function RegisterForm({
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
                 placeholder='Enter your last name'
+                autoComplete='family-name'
             />
 
             {/* Role Dropdown */}
@@ -87,7 +94,21 @@ export default function RegisterForm({
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder='Enter your password'
                 helperText='Password must be at least 8 characters and include uppercase, lowercase, number, and symbol.'
+                autoComplete='new-password'
             />
+
+            {isAdmin && (
+                <TextInput
+                    label='Admin Code'
+                    name='adminCode'
+                    type='password'
+                    value={adminCode}
+                    onChange={(e) => setAdminCode(e.target.value)}
+                    placeholder='Enter admin secret code'
+                    autoComplete='off'
+                    helperText='You should get it from the system maneger.'
+                />
+            )}
 
             <button
                 type='submit'

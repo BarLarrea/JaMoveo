@@ -18,6 +18,10 @@ export default function App() {
                     path='/register'
                     element={<RegisterPage />}
                 />
+                <Route
+                    path='/register/admin'
+                    element={<RegisterPage />}
+                />
             </Routes>
         </BrowserRouter>
     );

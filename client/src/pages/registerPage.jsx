@@ -1,4 +1,5 @@
-import { useState, useLocation } from "react";
+import { useLocation } from "react-router-dom";
+import { useState } from "react";
 import { validateEmail, validatePassword } from "../utils/validation";
 import { registerUser } from "../utils/auth";
 import { useNavigate } from "react-router-dom";
@@ -14,10 +15,11 @@ export default function RegisterPage() {
     const [instrument, setInstrument] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [adminCode, setAdminCode] = useState("");
 
     const navigate = useNavigate();
     const location = useLocation();
-    const isAdmin = location.pathname.includes("/admin");
+    const isAdmin = location.pathname.includes("/admin"); // Check if the user is registering as an admin
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -57,7 +59,8 @@ export default function RegisterPage() {
             instrument,
             email,
             password,
-            isAdmin
+            isAdmin,
+            adminCode: isAdmin ? adminCode : undefined // Only include adminCode if registering as admin
         });
 
         if (response?.success) {
@@ -94,6 +97,9 @@ export default function RegisterPage() {
                 password={password}
                 setPassword={setPassword}
                 handleSubmit={handleSubmit}
+                adminCode={adminCode}
+                setAdminCode={setAdminCode}
+                isAdmin={isAdmin}
             />
             <div className='mt-4 text-center'>
                 <p className='text-gray-600'>
