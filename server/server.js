@@ -5,6 +5,7 @@ import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
 import { Server } from "socket.io";
 import handleSocket from "./sockets/songSocket.js";
+import cors from "cors";
 
 dotenv.config();
 
@@ -14,11 +15,7 @@ const server = http.createServer(app);
 const PORT = process.env.PORT || 5000;
 
 app.use(express.json());
-
-// Simple test route
-app.get("/", (req, res) => {
-    res.send("Hello JaMoveo");
-});
+app.use(cors());
 
 // Connect to MongoDB, then start the server
 connectDB(() => {

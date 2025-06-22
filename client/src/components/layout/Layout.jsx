@@ -1,4 +1,4 @@
-import Container from "./    Container";
+import Container from "./Container";
 
 export default function Layout({ children }) {
     return (
@@ -14,7 +14,7 @@ export default function Layout({ children }) {
             </header>
 
             {/* MAIN CONTENT */}
-            <main className='flex flex-col flex-1 items-center max-w-screen-md mx-auto w-full px-4 sm:px-6 md:px-8 bg-white shadow-lg rounded-lg py-8'>
+            <main className='flex flex-col flex-1 items-center max-w-screen-md mx-auto w-full px-4 sm:px-6 md:px-8 bg-white shadow-lg rounded-lg py-8 overflow-y-auto'>
                 <div className='w-full max-w-md'>{children}</div>
             </main>
 
