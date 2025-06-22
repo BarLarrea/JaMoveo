@@ -22,8 +22,8 @@ const userSchema = new mongoose.Schema(
         instrument: {
             type: String,
             required: function () {
-                return !this.isSinger;
-            } // Only required if not a singer
+                return !this.isSinger && !this.isAdmin; // Only required if not a singer or admin
+            }
         },
         email: {
             type: String,

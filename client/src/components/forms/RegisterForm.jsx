@@ -1,21 +1,7 @@
 import TextInput from "../ui/TextInput";
 import Dropdown from "../ui/Dropdown";
+import { roleOptions, instrumentOptions } from "../../constants/formOptions";
 
-const roleOptions = [
-    { value: "singer", label: "🎤 Singer" },
-    { value: "player", label: "🎸 Player" }
-];
-
-const instrumentOptions = [
-    { value: "guitar", label: "🎸 Guitar" },
-    { value: "drums", label: "🥁 Drums" },
-    { value: "bass", label: "🎸 Bass" },
-    { value: "keyboard", label: "🎹 Keyboard" },
-    { value: "saxophone", label: "🎷 Saxophone" },
-    { value: "trumpet", label: "🎺 Trumpet" },
-    { value: "violin", label: "🎻 Violin" },
-    { value: "other", label: "🎶 Other" }
-];
 
 export default function RegisterForm({
     firstName,

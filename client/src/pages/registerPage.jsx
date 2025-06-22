@@ -32,12 +32,6 @@ export default function RegisterPage() {
             return;
         }
 
-        if (!isSinger && !instrument) {
-            alert("Please select an instrument if you are a music player.");
-            setLoading(false);
-            return;
-        }
-
         if (!validateEmail(email)) {
             alert("Please enter a valid email address.");
             setLoading(false);
@@ -51,6 +45,21 @@ export default function RegisterPage() {
             setLoading(false);
             return;
         }
+
+        if (isAdmin && !adminCode) {
+            alert("Please enter the admin code to register as an admin.");
+            setLoading(false);
+            return;
+        }
+
+        console.log("isSinger:", isSinger);
+
+        if (!isAdmin && !isSinger && !instrument) {
+            alert("Please select an instrument if you are a music player.");
+            setLoading(false);
+            return;
+        }
+
         // Make API call only if all validations pass
         const response = await registerUser({
             firstName,

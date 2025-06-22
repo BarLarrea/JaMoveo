@@ -12,13 +12,13 @@ export const registerUser = async (req, res) => {
         instrument,
         email,
         password,
+        isAdmin,
         adminCode
-    } = req.body
+    } = req.body;
 
-    // Check if the request is for admin registration
-    const isAdminRequest = req.originalUrl.includes("/admin/register");
-    const isAdminFlag =
-        isAdminRequest && adminCode === process.env.ADMIN_SECRET;
+    console.log("isAdmin:", isAdmin);
+
+    const isAdminValid = isAdmin && adminCode === process.env.ADMIN_CODE;
 
     // Basic presence check
     if (!firstName || !lastName || !email || !password) {
@@ -45,16 +45,21 @@ export const registerUser = async (req, res) => {
     }
 
     // Instrument required for non-singers (admin can skip this)
-    if (!isSinger && !instrument && !isAdminFlag) {
+    if (!isSinger && !instrument && !isAdminValid) {
         return res
             .status(400)
             .json({ message: "Instrument is required for non-singers" });
     }
 
-     // Ensure instrument is not provided along with isSinger
-     if (isSinger && instrument && typeof instrument === "string" && instrument.trim() !== "") {
+    // Ensure instrument is not provided along with isSinger
+    if (
+        isSinger &&
+        instrument &&
+        typeof instrument === "string" &&
+        instrument.trim() !== ""
+    ) {
         return res.status(400).json({
-          message: "User cannot be both a singer and an instrumentalist"
+            message: "User cannot be both a singer and an instrumentalist"
         });
     }
 
@@ -66,7 +71,7 @@ export const registerUser = async (req, res) => {
         const newUser = new User({
             firstName,
             lastName,
-            isAdmin: isAdminFlag,
+            isAdmin: isAdminValid,
             isSinger: Boolean(isSinger),
             instrument: isSinger ? null : instrument,
             email: normalizedEmail,

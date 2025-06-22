@@ -7,9 +7,10 @@ export const registerUser = async ({
     instrument,
     email,
     password,
-    isAdmin
+    isAdmin,
+    adminCode
 }) => {
-    const url = isAdmin ? "/api/auth/admin/register" : "/api/auth/register";
+    const url = isAdmin ? "/api/auth/register/admin" : "/api/auth/register";
     try {
         const response = await axios.post(`http://localhost:3000${url}`, {
             firstName,
@@ -17,7 +18,9 @@ export const registerUser = async ({
             isSinger,
             instrument,
             email,
-            password
+            password,
+            isAdmin,
+            adminCode: isAdmin ? adminCode : undefined // Only include adminCode if registering as admin
         });
 
         if (response.status === 201) {
