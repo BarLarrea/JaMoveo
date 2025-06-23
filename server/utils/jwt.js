@@ -7,7 +7,7 @@ export function generateAccessToken(user) {
     const payload = {
         userId: user._id,
         isAdmin: user.isAdmin,
-        isSinger: user.isSinger,
+        bandRole: user.bandRole,
         instrument: user.isSinger ? null : user.instrument
     };
 
