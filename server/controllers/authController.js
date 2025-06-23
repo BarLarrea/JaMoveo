@@ -1,6 +1,7 @@
 import User from "../models/userModel.js";
 import bcrypt from "bcryptjs";
 import { generateAccessToken } from "../utils/jwt.js";
+import { validateEmail, validatePassword } from "../utils/validation.js";
 
 export const registerUser = async (req, res) => {
     const {
@@ -43,7 +44,7 @@ export const registerUser = async (req, res) => {
 
     // Normalize and validate email
     const normalizedEmail = email.toLowerCase();
-    if (!emailRegex.test(normalizedEmail)) {
+    if (!validateEmail(normalizedEmail)) {
         return res.status(400).json({ message: "Invalid email format" });
     }
 
@@ -58,7 +59,7 @@ export const registerUser = async (req, res) => {
     }
 
     // Password strength check
-    if (password.length < 8) {
+    if (!validatePassword(password)) {
         return res
             .status(400)
             .json({ message: "Password must be at least 8 characters long" });
@@ -114,7 +115,7 @@ export const loginUser = async (req, res) => {
             .json({ message: "Email and password are required" });
     }
 
-    if (!emailRegex.test(email)) {
+    if (!validateEmail(email)) {
         return res.status(400).json({ message: "Invalid email format" });
     }
 
@@ -160,6 +161,3 @@ export const loginUser = async (req, res) => {
         });
     }
 };
-
-const emailRegex =
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
