@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import RegisterPage from "./pages/registerPage";
 import LoginPage from "./pages/loginPage";
 import MainPageAdmin from "./pages/mainPageAdmin";
+import ResultsPage from "./pages/resultsPage";
 
 export default function App() {
     return (
@@ -26,6 +27,10 @@ export default function App() {
                 <Route
                     path='/mainPageAdmin'
                     element={<MainPageAdmin />}
+                />
+                <Route
+                    path='/results'
+                    element={<ResultsPage />}
                 />
             </Routes>
         </BrowserRouter>

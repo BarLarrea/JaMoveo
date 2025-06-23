@@ -11,6 +11,7 @@ export default function AdminMainPage() {
         navigate(`/results?query=${encodeURIComponent(searchQuery.trim())}`);
     };
 
+    // Allow search with Enter key
     const handleKeyDown = (e) => {
         if (e.key === "Enter") {
             handleSearch();
@@ -19,11 +20,13 @@ export default function AdminMainPage() {
 
     return (
         <Layout>
+            {/* Page heading */}
             <div className='text-left mb-6'>
                 <h1 className='text-3xl font-bold'>Search any song...</h1>
                 <p className='text-gray-600'>Search by title or artist name</p>
             </div>
 
+            {/* Search input */}
             <div className='flex justify-center mb-4'>
                 <input
                     type='text'
@@ -35,6 +38,7 @@ export default function AdminMainPage() {
                 />
             </div>
 
+            {/* Search button */}
             <div className='flex justify-center'>
                 <button
                     onClick={handleSearch}

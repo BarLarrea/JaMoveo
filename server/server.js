@@ -6,6 +6,7 @@ import authRoutes from "./routes/authRoutes.js";
 import { Server } from "socket.io";
 import handleSocket from "./sockets/songSocket.js";
 import cors from "cors";
+import songRoutes from "./routes/songRoutes.js";
 
 dotenv.config();
 
@@ -24,13 +25,14 @@ connectDB(() => {
     });
 });
 
-// Routes setup
+// Routes
 app.use("/api/auth", authRoutes);
+app.use("/api/songs", songRoutes);
 
 // Real time state
 let currentSong = null;
 
-// Socket.io setup
+// Socket.io
 const io = new Server(server, {
     cors: {
         origin: "*",
