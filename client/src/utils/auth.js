@@ -1,16 +1,19 @@
 import axios from "axios";
 
-export const registerUser = async ({
-    firstName,
-    lastName,
-    bandRole,
-    instrument,
-    email,
-    password,
-    isAdmin,
-    adminCode
-}) => {
+export const registerUser = async (userData) => {
+    const {
+        firstName,
+        lastName,
+        bandRole,
+        instrument,
+        email,
+        password,
+        isAdmin,
+        adminCode
+    } = userData;
+
     const url = isAdmin ? "/api/auth/register/admin" : "/api/auth/register";
+
     try {
         const response = await axios.post(`http://localhost:3000${url}`, {
             firstName,

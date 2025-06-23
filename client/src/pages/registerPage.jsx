@@ -1,6 +1,6 @@
 import { useLocation } from "react-router-dom";
 import { useState } from "react";
-import { validateEmail, validatePassword } from "../utils/validation";
+import { validateRegisterForm } from "../utils/validation";
 import { registerUser } from "../utils/auth";
 import { useNavigate } from "react-router-dom";
 import RegisterForm from "../components/forms/RegisterForm";
@@ -8,68 +8,42 @@ import Layout from "../components/layout/Layout";
 import { Link } from "react-router-dom";
 
 export default function RegisterPage() {
-    const [loading, setLoading] = useState(false);
-    const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
-    const [bandRole, setBandRole] = useState(null);
-    const [instrument, setInstrument] = useState("");
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [adminCode, setAdminCode] = useState("");
+    const [formData, setFormData] = useState({
+        firstName: "",
+        lastName: "",
+        bandRole: null,
+        instrument: "",
+        email: "",
+        password: "",
+        adminCode: ""
+    });
 
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
     const location = useLocation();
-    const isAdmin = location.pathname.includes("/admin"); // Check if the user is registering as an admin
+
+    // Check if the user is registering as an admin
+    // It dosent say the user is a valid-admin and it will be checked in the backend with a spacial adminCode
+    const isAdmin = location.pathname.includes("/admin");
+
+    const handleChange = (field) => (value) => {
+        setFormData((prev) => ({ ...prev, [field]: value }));
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
 
-        //validate inputs
-        if (!firstName || !lastName || !email || !password) {
-            alert("Please fill in all required fields.");
-            setLoading(false);
-            return;
-        }
-
-        if (!validateEmail(email)) {
-            alert("Please enter a valid email address.");
-            setLoading(false);
-            return;
-        }
-
-        if (!validatePassword(password)) {
-            alert(
-                "Password must be at least 8 characters long and include uppercase, lowercase, number, and special character."
-            );
-            setLoading(false);
-            return;
-        }
-
-        // An admin does not have to be a singer or musician, but regular users must be singers or musicians
-        if (!isAdmin && roleBand === "player" && !instrument) {
-            alert("Please select an instrument if you are a music player F.");
-            setLoading(false);
-            return;
-        }
-
-        if (isAdmin && !adminCode) {
-            alert("Please enter the admin code to register as an admin.");
-            setLoading(false);
-            return;
-        }
-
         // Make API call only if all validations pass
-        const response = await registerUser({
-            firstName,
-            lastName,
-            bandRole,
-            instrument,
-            email,
-            password,
-            isAdmin,
-            adminCode: isAdmin ? adminCode : undefined // Only include adminCode if registering from admin URL, it dosent say the user is a valid admin and it will be checked in the backend
-        });
+        const error = validateRegisterForm({ ...formData, isAdmin });
+        if (error) {
+            alert(error);
+            setLoading(false);
+            return;
+        }
+
+        // API call to register 
+        const response = await registerUser({ ...formData, isAdmin });
 
         if (response?.success) {
             alert("Registration successful!");
@@ -92,21 +66,9 @@ export default function RegisterPage() {
                 </p>
             </div>
             <RegisterForm
-                firstName={firstName}
-                setFirstName={setFirstName}
-                lastName={lastName}
-                setLastName={setLastName}
-                bandRole={bandRole}
-                setBandRole={setBandRole}
-                instrument={instrument}
-                setInstrument={setInstrument}
-                email={email}
-                setEmail={setEmail}
-                password={password}
-                setPassword={setPassword}
+                formData={formData}
+                handleChange={handleChange}
                 handleSubmit={handleSubmit}
-                adminCode={adminCode}
-                setAdminCode={setAdminCode}
                 isAdmin={isAdmin}
             />
             <div className='mt-4 text-center'>

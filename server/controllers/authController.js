@@ -2,8 +2,6 @@ import User from "../models/userModel.js";
 import bcrypt from "bcryptjs";
 import { generateAccessToken } from "../utils/jwt.js";
 
-const emailRegex = /^\S+@\S+\.\S+$/;
-
 export const registerUser = async (req, res) => {
     const {
         firstName,
@@ -162,3 +160,6 @@ export const loginUser = async (req, res) => {
         });
     }
 };
+
+const emailRegex =
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;

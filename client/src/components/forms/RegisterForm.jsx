@@ -3,23 +3,20 @@ import Dropdown from "../ui/Dropdown";
 import { roleOptions, instrumentOptions } from "../../constants/formOptions";
 
 export default function RegisterForm({
-    firstName,
-    setFirstName,
-    lastName,
-    setLastName,
-    bandRole,
-    setBandRole,
-    instrument,
-    setInstrument,
-    email,
-    setEmail,
-    password,
-    setPassword,
+    formData,
+    handleChange,
     handleSubmit,
-    isAdmin,
-    adminCode,
-    setAdminCode
+    isAdmin
 }) {
+    const {
+        firstName,
+        lastName,
+        bandRole,
+        instrument,
+        email,
+        password,
+        adminCode
+    } = formData;
     return (
         <form
             onSubmit={handleSubmit}
@@ -31,7 +28,7 @@ export default function RegisterForm({
                 name='email'
                 type='email'
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => handleChange("email")(e.target.value)}
                 placeholder='Enter your email'
                 autoComplete='email'
             />
@@ -40,7 +37,7 @@ export default function RegisterForm({
                 label='First Name'
                 name='firstName'
                 value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
+                onChange={(e) => handleChange("firstName")(e.target.value)}
                 placeholder='Enter your first name'
                 autoComplete='given-name'
             />
@@ -49,7 +46,7 @@ export default function RegisterForm({
                 label='Last Name'
                 name='lastName'
                 value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
+                onChange={(e) => handleChange("lastName")(e.target.value)}
                 placeholder='Enter your last name'
                 autoComplete='family-name'
             />
@@ -58,16 +55,17 @@ export default function RegisterForm({
             <Dropdown
                 label='What is your Band-Role?'
                 options={roleOptions}
-                value={bandRole}
-                onChange={(value) => setBandRole(value)}
+                value={formData.bandRole}
+                onChange={handleChange("bandRole")}
             />
+
             {/* Instrument Dropdown */}
             {bandRole === "player" && (
                 <Dropdown
                     label='Select your instrument'
                     options={instrumentOptions}
                     value={instrument}
-                    onChange={(value) => setInstrument(value)}
+                    onChange={handleChange("instrument")}
                 />
             )}
 
@@ -76,7 +74,7 @@ export default function RegisterForm({
                 name='password'
                 type='password'
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => handleChange("password")(e.target.value)}
                 placeholder='Enter your password'
                 helperText='Password must be at least 8 characters and include uppercase, lowercase, number, and symbol.'
                 autoComplete='new-password'
@@ -88,7 +86,7 @@ export default function RegisterForm({
                     name='adminCode'
                     type='password'
                     value={adminCode}
-                    onChange={(e) => setAdminCode(e.target.value)}
+                    onChange={(e) => handleChange("adminCode")(e.target.value)}
                     placeholder='Enter admin secret code'
                     autoComplete='off'
                     helperText='You should get it from the system maneger.'
