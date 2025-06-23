@@ -14,16 +14,19 @@ const userSchema = new mongoose.Schema(
             type: Boolean,
             default: false
         },
-        isSinger: {
-            type: Boolean,
-            default: false,
-            required: true
+        bandRole: {
+            type: String,
+            enum: ["singer", "player"],
+            required: function () {
+                return !this.isAdmin;
+            }
         },
         instrument: {
             type: String,
             required: function () {
-                return !this.isSinger && !this.isAdmin; // Only required if not a singer or admin
-            }
+                return this.bandRole === "player";
+            },
+            default: null
         },
         email: {
             type: String,

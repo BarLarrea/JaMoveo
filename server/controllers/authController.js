@@ -8,7 +8,7 @@ export const registerUser = async (req, res) => {
     const {
         firstName,
         lastName,
-        isSinger,
+        bandRole, // 'singer' or 'player'
         instrument,
         email,
         password,
@@ -18,17 +18,39 @@ export const registerUser = async (req, res) => {
 
     console.log("isAdmin:", isAdmin);
 
-    const isAdminValid = isAdmin && adminCode === process.env.ADMIN_CODE;
+    console.log("Admin code provided:", adminCode);
+    console.log("Admin secret:", process.env.ADMIN_SECRET);
+
+    const isAdminValid = isAdmin && adminCode === process.env.ADMIN_SECRET;
+    console.log("isAdminValid:", isAdminValid);
 
     // Basic presence check
     if (!firstName || !lastName || !email || !password) {
         return res.status(400).json({ message: "All fields are required" });
     }
 
+    // Instrument required for players
+    if (bandRole === "player" && !instrument) {
+        return res
+            .status(400)
+            .json({ message: "Instrument is required for players" });
+    }
+
+    // Ensure instrument is not provided along with isSinger
+    if (bandRole === "singer" && instrument) {
+        return res.status(400).json({
+            message: "User cannot be both a singer and an instrumentalist"
+        });
+    }
+
     // Normalize and validate email
     const normalizedEmail = email.toLowerCase();
     if (!emailRegex.test(normalizedEmail)) {
         return res.status(400).json({ message: "Invalid email format" });
+    }
+
+    if (isAdmin && !isAdminValid) {
+        return res.status(403).json({ message: "Invalid admin code" });
     }
 
     // Check if user already exists
@@ -44,25 +66,6 @@ export const registerUser = async (req, res) => {
             .json({ message: "Password must be at least 8 characters long" });
     }
 
-    // Instrument required for non-singers (admin can skip this)
-    if (!isSinger && !instrument && !isAdminValid) {
-        return res
-            .status(400)
-            .json({ message: "Instrument is required for non-singers" });
-    }
-
-    // Ensure instrument is not provided along with isSinger
-    if (
-        isSinger &&
-        instrument &&
-        typeof instrument === "string" &&
-        instrument.trim() !== ""
-    ) {
-        return res.status(400).json({
-            message: "User cannot be both a singer and an instrumentalist"
-        });
-    }
-
     try {
         // Hash password
         const hashedPassword = await bcrypt.hash(password, 10);
@@ -72,8 +75,8 @@ export const registerUser = async (req, res) => {
             firstName,
             lastName,
             isAdmin: isAdminValid,
-            isSinger: Boolean(isSinger),
-            instrument: isSinger ? null : instrument,
+            bandRole: bandRole,
+            instrument: bandRole === "singer" ? null : instrument,
             email: normalizedEmail,
             password: hashedPassword
         });
@@ -88,7 +91,7 @@ export const registerUser = async (req, res) => {
                 firstName: savedUser.firstName,
                 lastName: savedUser.lastName,
                 isAdmin: savedUser.isAdmin,
-                isSinger: savedUser.isSinger,
+                bandRole: savedUser.bandRole,
                 instrument: savedUser.instrument,
                 email: savedUser.email
             },
@@ -146,13 +149,16 @@ export const loginUser = async (req, res) => {
                 firstName: user.firstName,
                 lastName: user.lastName,
                 isAdmin: user.isAdmin,
-                isSinger: user.isSinger,
+                bandRole: user.bandRole,
                 instrument: user.instrument,
                 email: user.email
             },
             token
         });
     } catch (error) {
-        res.status(500).json({ message: "Error logging in", error });
+        res.status(500).json({
+            message: "Error logging in",
+            error: error.message || error
+        });
     }
 };

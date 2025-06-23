@@ -2,14 +2,13 @@ import TextInput from "../ui/TextInput";
 import Dropdown from "../ui/Dropdown";
 import { roleOptions, instrumentOptions } from "../../constants/formOptions";
 
-
 export default function RegisterForm({
     firstName,
     setFirstName,
     lastName,
     setLastName,
-    isSinger,
-    setIsSinger,
+    bandRole,
+    setBandRole,
     instrument,
     setInstrument,
     email,
@@ -57,18 +56,18 @@ export default function RegisterForm({
 
             {/* Role Dropdown */}
             <Dropdown
-                label='What is your role?'
+                label='What is your Band-Role?'
                 options={roleOptions}
-                value={isSinger === null ? "" : isSinger ? "singer" : "player"}
-                onChange={(val) => setIsSinger(val === "singer")}
+                value={bandRole}
+                onChange={(value) => setBandRole(value)}
             />
             {/* Instrument Dropdown */}
-            {isSinger === false && (
+            {bandRole === "player" && (
                 <Dropdown
                     label='Select your instrument'
                     options={instrumentOptions}
                     value={instrument}
-                    onChange={setInstrument}
+                    onChange={(value) => setInstrument(value)}
                 />
             )}
 

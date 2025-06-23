@@ -3,7 +3,7 @@ import axios from "axios";
 export const registerUser = async ({
     firstName,
     lastName,
-    isSinger,
+    bandRole,
     instrument,
     email,
     password,
@@ -15,12 +15,12 @@ export const registerUser = async ({
         const response = await axios.post(`http://localhost:3000${url}`, {
             firstName,
             lastName,
-            isSinger,
+            bandRole,
             instrument,
             email,
             password,
             isAdmin,
-            adminCode: isAdmin ? adminCode : undefined // Only include adminCode if registering as admin
+            adminCode: isAdmin ? adminCode : undefined // Only include adminCode if registering from admin URL
         });
 
         if (response.status === 201) {

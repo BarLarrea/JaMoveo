@@ -11,7 +11,7 @@ export default function RegisterPage() {
     const [loading, setLoading] = useState(false);
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
-    const [isSinger, setIsSinger] = useState(null);
+    const [bandRole, setBandRole] = useState(null);
     const [instrument, setInstrument] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -46,16 +46,15 @@ export default function RegisterPage() {
             return;
         }
 
-        if (isAdmin && !adminCode) {
-            alert("Please enter the admin code to register as an admin.");
+        // An admin does not have to be a singer or musician, but regular users must be singers or musicians
+        if (!isAdmin && roleBand === "player" && !instrument) {
+            alert("Please select an instrument if you are a music player F.");
             setLoading(false);
             return;
         }
 
-        console.log("isSinger:", isSinger);
-
-        if (!isAdmin && !isSinger && !instrument) {
-            alert("Please select an instrument if you are a music player.");
+        if (isAdmin && !adminCode) {
+            alert("Please enter the admin code to register as an admin.");
             setLoading(false);
             return;
         }
@@ -64,12 +63,12 @@ export default function RegisterPage() {
         const response = await registerUser({
             firstName,
             lastName,
-            isSinger,
+            bandRole,
             instrument,
             email,
             password,
             isAdmin,
-            adminCode: isAdmin ? adminCode : undefined // Only include adminCode if registering as admin
+            adminCode: isAdmin ? adminCode : undefined // Only include adminCode if registering from admin URL, it dosent say the user is a valid admin and it will be checked in the backend
         });
 
         if (response?.success) {
@@ -97,8 +96,8 @@ export default function RegisterPage() {
                 setFirstName={setFirstName}
                 lastName={lastName}
                 setLastName={setLastName}
-                isSinger={isSinger}
-                setIsSinger={setIsSinger}
+                bandRole={bandRole}
+                setBandRole={setBandRole}
                 instrument={instrument}
                 setInstrument={setInstrument}
                 email={email}
