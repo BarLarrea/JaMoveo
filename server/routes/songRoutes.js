@@ -1,5 +1,5 @@
 import express from "express";
-import { authenticateToken, isAdmin } from "../middleware/authMiddleware.js";
+import { authenticateToken, isAdmin } from "../middleware/authMiddleware.js.js";
 import {
     searchSongs,
     getSongByFileName
@@ -9,6 +9,6 @@ const router = express.Router();
 
 router.get("/", authenticateToken, isAdmin, searchSongs);
 
-router.get("/:file", authenticateToken, getSongByFileName);
+router.get("/:file", authenticateToken, isAdmin, getSongByFileName);
 
 export default router;
