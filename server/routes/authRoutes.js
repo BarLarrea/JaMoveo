@@ -8,6 +8,6 @@ router.post("/register", registerUser);
 router.post("/login", loginUser);
 
 // Admin register route
-router.post("/admin/register", registerUser);
+router.post("/register/admin", registerUser);
 
 export default router;

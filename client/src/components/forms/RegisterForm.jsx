@@ -1,81 +1,71 @@
 import TextInput from "../ui/TextInput";
 import Dropdown from "../ui/Dropdown";
-
-const roleOptions = [
-    { value: "singer", label: "🎤 Singer" },
-    { value: "player", label: "🎸 Player" }
-];
-
-const instrumentOptions = [
-    { value: "guitar", label: "🎸 Guitar" },
-    { value: "drums", label: "🥁 Drums" },
-    { value: "bass", label: "🎸 Bass" },
-    { value: "keyboard", label: "🎹 Keyboard" },
-    { value: "saxophone", label: "🎷 Saxophone" },
-    { value: "trumpet", label: "🎺 Trumpet" },
-    { value: "violin", label: "🎻 Violin" },
-    { value: "other", label: "🎶 Other" }
-];
+import { roleOptions, instrumentOptions } from "../../constants/formOptions";
 
 export default function RegisterForm({
-    firstName,
-    setFirstName,
-    lastName,
-    setLastName,
-    isSinger,
-    setIsSinger,
-    instrument,
-    setInstrument,
-    email,
-    setEmail,
-    password,
-    setPassword,
-    handleSubmit
+    formData,
+    handleChange,
+    handleSubmit,
+    isAdmin
 }) {
+    const {
+        firstName,
+        lastName,
+        bandRole,
+        instrument,
+        email,
+        password,
+        adminCode
+    } = formData;
     return (
         <form
             onSubmit={handleSubmit}
             className='space-y-6'
+            autoComplete='on'
         >
             <TextInput
                 label='Email'
                 name='email'
                 type='email'
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => handleChange("email")(e.target.value)}
                 placeholder='Enter your email'
+                autoComplete='email'
             />
 
             <TextInput
                 label='First Name'
                 name='firstName'
                 value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
+                onChange={(e) => handleChange("firstName")(e.target.value)}
                 placeholder='Enter your first name'
+                autoComplete='given-name'
             />
 
             <TextInput
                 label='Last Name'
                 name='lastName'
                 value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
+                onChange={(e) => handleChange("lastName")(e.target.value)}
                 placeholder='Enter your last name'
+                autoComplete='family-name'
             />
 
             {/* Role Dropdown */}
             <Dropdown
-                label='What is your role?'
+                label='What is your Band-Role?'
                 options={roleOptions}
-                value={isSinger === null ? "" : isSinger ? "singer" : "player"}
-                onChange={(val) => setIsSinger(val === "singer")}
+                value={formData.bandRole}
+                onChange={handleChange("bandRole")}
             />
+
             {/* Instrument Dropdown */}
-            {isSinger === false && (
+            {bandRole === "player" && (
                 <Dropdown
                     label='Select your instrument'
                     options={instrumentOptions}
                     value={instrument}
-                    onChange={setInstrument}
+                    onChange={handleChange("instrument")}
                 />
             )}
 
@@ -84,10 +74,24 @@ export default function RegisterForm({
                 name='password'
                 type='password'
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => handleChange("password")(e.target.value)}
                 placeholder='Enter your password'
                 helperText='Password must be at least 8 characters and include uppercase, lowercase, number, and symbol.'
+                autoComplete='new-password'
             />
+
+            {isAdmin && (
+                <TextInput
+                    label='Admin Code'
+                    name='adminCode'
+                    type='password'
+                    value={adminCode}
+                    onChange={(e) => handleChange("adminCode")(e.target.value)}
+                    placeholder='Enter admin secret code'
+                    autoComplete='off'
+                    helperText='You should get it from the system maneger.'
+                />
+            )}
 
             <button
                 type='submit'
