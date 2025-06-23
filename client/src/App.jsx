@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import RegisterPage from "./pages/registerPage";
 import LoginPage from "./pages/loginPage";
+import MainPageAdmin from "./pages/mainPageAdmin";
 
 export default function App() {
     return (
@@ -21,6 +22,10 @@ export default function App() {
                 <Route
                     path='/register/admin'
                     element={<RegisterPage />}
+                />
+                <Route
+                    path='/mainPageAdmin'
+                    element={<MainPageAdmin />}
                 />
             </Routes>
         </BrowserRouter>
