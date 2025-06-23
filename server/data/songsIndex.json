@@ -1,0 +1,18 @@
+[
+  {
+    "fileName": "hey_jude.json",
+    "name": "Hey Jude",
+    "altNames": ["היי ג'וד", "הי ג׳וד", "היי יוד"],
+    "artist": "The Beatles",
+    "altArtists": ["הביטלס"],
+    "imageUrl": null
+  },
+  {
+    "fileName": "veech_shelo.json",
+    "name": "ואיך שלא",
+    "altNames": ["veech shelo", "ve'ech shelo", "ve ech shelo", "ואיך שלא"],
+    "artist": "עידן רייכל",
+    "altArtists": ["idan raichel", "idan reichal", "עידן רייכל"],
+    "imageUrl": null
+  }
+]

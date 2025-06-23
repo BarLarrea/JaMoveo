@@ -1,6 +1,7 @@
 import { verifyAccessToken } from "../utils/jwt.js";
 
-function authenticateToken(req, res, next) {
+// Verify JWT tokens
+export default function authenticateToken(req, res, next) {
     const authHeader = req.headers["authorization"];
     const token = authHeader?.split(" ")[1];
 
@@ -14,4 +15,10 @@ function authenticateToken(req, res, next) {
     next();
 }
 
-export default authenticateToken;
+// Check if the user is an admin
+export default function isAdmin(req, res, next) {
+    if (!req.user?.isAdmin) {
+        return res.status(403).json({ message: "Access denied: Admins only" });
+    }
+    next();
+}
