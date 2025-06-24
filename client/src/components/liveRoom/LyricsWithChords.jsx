@@ -1,5 +1,3 @@
-"use client";
-
 export default function LyricsWithChords({ song }) {
     const hasHebrew = song.some((line) =>
         line.some((part) => /[\u0590-\u05FF]/.test(part.lyrics))
