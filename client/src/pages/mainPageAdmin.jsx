@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Layout from "../components/layout/Layout";
-import TextInput from "../components/ui/TextInput"; // נניח שהקומפוננטה קיימת כאן
 
 export default function AdminMainPage() {
     const [searchQuery, setSearchQuery] = useState("");

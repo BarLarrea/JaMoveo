@@ -8,6 +8,7 @@ import LiveControls from "../components/liveRoom/LiveControls";
 import LyricsWithChords from "../components/liveRoom/LyricsWithChords";
 import LyricsOnly from "../components/liveRoom/LyricsOnly";
 import socket from "../socket";
+import { songsApiUrl, renderBackendURL } from "../constants/urls";
 
 export default function LiveRoomPage() {
     const location = useLocation();
@@ -31,7 +32,7 @@ export default function LiveRoomPage() {
         const loadSong = async () => {
             try {
                 const { data } = await axios.get(
-                    `http://localhost:3000/api/songs/${songFileName}`,
+                    `${renderBackendURL}${songsApiUrl}${songFileName}`,
                     {
                         headers: {
                             Authorization: `Bearer ${token}`

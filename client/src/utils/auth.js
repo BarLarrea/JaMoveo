@@ -1,4 +1,5 @@
 import axios from "axios";
+import { renderBackendURL, loginApiUrl } from "../constants/urls.js";
 
 export const registerUser = async (userData) => {
     const {
@@ -12,10 +13,12 @@ export const registerUser = async (userData) => {
         adminCode
     } = userData;
 
-    const url = isAdmin ? "/api/auth/register/admin" : "/api/auth/register";
+    const isAdminurl = isAdmin
+        ? "/api/auth/register/admin"
+        : "/api/auth/register";
 
     try {
-        const response = await axios.post(`http://localhost:3000${url}`, {
+        const response = await axios.post(`${renderBackendURL}${isAdminurl}`, {
             firstName,
             lastName,
             bandRole,
@@ -42,13 +45,10 @@ export const registerUser = async (userData) => {
 
 export const loginUser = async ({ email, password }) => {
     try {
-        const response = await axios.post(
-            "http://localhost:3000/api/auth/login",
-            {
-                email,
-                password
-            }
-        );
+        const response = await axios.post(`${renderBackendURL}${loginApiUrl}`, {
+            email,
+            password
+        });
 
         if (response.status === 200) {
             return { success: true, data: response.data };
