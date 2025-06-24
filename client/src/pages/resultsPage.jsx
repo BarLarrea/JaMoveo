@@ -1,17 +1,32 @@
-"use client";
-
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 import Spinner from "../components/ui/Spinner";
 import Layout from "../components/layout/Layout";
 import SongCard from "../components/cards/SongCard";
+import socket from "../socket";
+import { useNavigate } from "react-router-dom";
 
 export default function ResultsPage() {
     const location = useLocation();
     const [query, setQuery] = useState("");
     const [songs, setSongs] = useState([]);
     const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        socket.on("song-selected", (song) => {
+            navigate(`/live?song=${encodeURIComponent(song.name)}`);
+        });
+
+        return () => {
+            socket.off("song-selected");
+        };
+    }, [navigate]);
+
+    const handleSongSelect = (song) => {
+        socket.emit("select-song", song);
+    };
 
     // Fetch songs from the backend based on search query
     const fetchSongs = async (searchQuery) => {
@@ -77,6 +92,7 @@ export default function ResultsPage() {
                         <SongCard
                             key={idx}
                             song={song}
+                            onSelect={handleSongSelect}
                         />
                     ))}
                 </div>

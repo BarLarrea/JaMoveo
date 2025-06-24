@@ -7,6 +7,7 @@ import LiveHeader from "../components/liveRoom/LiveHeader";
 import LiveControls from "../components/liveRoom/LiveControls";
 import LyricsWithChords from "../components/liveRoom/LyricsWithChords";
 import LyricsOnly from "../components/liveRoom/LyricsOnly";
+import socket from "../socket";
 
 export default function LiveRoomPage() {
     const location = useLocation();
@@ -63,12 +64,36 @@ export default function LiveRoomPage() {
         return () => clearInterval(scrollTimerRef.current);
     }, [autoScroll]);
 
-    const toggleScroll = () => setAutoScroll(!autoScroll);
+    const toggleScroll = () => {
+        if (user?.isAdmin) {
+            socket.emit("scroll-toggle", !autoScroll);
+        }
+    };
+
+    useEffect(() => {
+        socket.on("scroll-toggle", (state) => {
+            setAutoScroll(state);
+        });
+
+        return () => {
+            socket.off("scroll-toggle");
+        };
+    }, []);
+
+    useEffect(() => {
+        socket.on("quit", () => {
+            navigate(user?.isAdmin ? "/mainPageAdmin" : "/mainPageUser");
+        });
+
+        return () => {
+            socket.off("quit");
+        };
+    }, [user, navigate]);
 
     const handleExit = () => {
         if (user?.isAdmin) {
-            navigate("/mainPageAdmin");
-        } else navigate("/mainPageUser");
+            socket.emit("quit");
+        }
     };
 
     if (loading) {

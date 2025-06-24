@@ -17,6 +17,10 @@ export default function handleSocket(io) {
             io.emit("quit");
         });
 
+        socket.on("scroll-toggle", (state) => {
+            io.emit("scroll-toggle", state);
+        });
+
         socket.on("disconnect", () => {
             console.log("Socket disconnected:", socket.id);
         });
