@@ -62,11 +62,11 @@ export default function LiveRoomPage() {
                 const el = scrollAreaRef.current;
                 if (!el) return;
 
-                // Stop scrolling if we're at the bottom
                 const threshold = 5;
                 const atBottom =
                     el.scrollTop + el.clientHeight >=
                     el.scrollHeight - threshold;
+
                 if (atBottom) {
                     clearInterval(scrollTimerRef.current);
                     setAutoScroll(false);
