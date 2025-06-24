@@ -1,5 +1,5 @@
 import express from "express";
-import { authenticateToken, isAdmin } from "../middleware/authMiddleware.js.js";
+import { authenticateToken, isAdmin } from "../middleware/authMiddleware.js";
 import {
     searchSongs,
     getSongByFileName

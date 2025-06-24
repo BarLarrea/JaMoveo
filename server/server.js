@@ -4,7 +4,7 @@ import http from "http";
 import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
 import { Server } from "socket.io";
-import handleSocket from "./sockets/songSocket.js";
+import handleSocket from "./middleware/handleSocket.js";
 import cors from "cors";
 import songRoutes from "./routes/songRoutes.js";
 

@@ -5,6 +5,7 @@ import { useNavigate, Link } from "react-router-dom";
 import LoginForm from "../components/forms/LoginForm";
 import Layout from "../components/layout/Layout";
 import { jwtDecode } from "jwt-decode";
+import socket from "../socket";
 
 export default function LoginPage() {
     const [loading, setLoading] = useState(false);
@@ -42,7 +43,12 @@ export default function LoginPage() {
                 return;
             }
 
+            // Set token in localStorage
             localStorage.setItem("token", token);
+
+            // Set token to socket and connect
+            socket.auth.token = token;
+            socket.connect();
 
             try {
                 const decodedToken = jwtDecode(token);
