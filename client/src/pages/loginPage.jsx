@@ -6,6 +6,7 @@ import LoginForm from "../components/forms/LoginForm";
 import Layout from "../components/layout/Layout";
 import { jwtDecode } from "jwt-decode";
 import socket from "../socket";
+import Spinner from "../components/ui/Spinner";
 
 export default function LoginPage() {
     const [loading, setLoading] = useState(false);
@@ -68,6 +69,14 @@ export default function LoginPage() {
         setLoading(false);
     };
 
+    if (loading) {
+        return (
+            <Layout>
+                <Spinner message='Logging in...' />
+            </Layout>
+        );
+    }
+
     return (
         <Layout>
             <div className='text-center mb-6'>
@@ -81,9 +90,6 @@ export default function LoginPage() {
                 setPassword={setPassword}
                 handleSubmit={handleSubmit}
             />
-            {loading && (
-                <div className='mt-4 text-center text-gray-500'>Loading...</div>
-            )}
             <div className='mt-4 text-center'>
                 <p className='text-gray-600'>
                     Don't have an account yet?{" "}
