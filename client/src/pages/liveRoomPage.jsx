@@ -59,14 +59,26 @@ export default function LiveRoomPage() {
         if (autoScroll) {
             const scrollStep = window.innerWidth < 600 ? 14 : 2;
             scrollTimerRef.current = setInterval(() => {
-                scrollAreaRef.current?.scrollBy({
-                    top: scrollStep,
-                    behavior: "smooth"
-                });
+                const el = scrollAreaRef.current;
+                if (!el) return;
+
+                const threshold = 5;
+                const atBottom =
+                    el.scrollTop + el.clientHeight >=
+                    el.scrollHeight - threshold;
+
+                if (atBottom) {
+                    clearInterval(scrollTimerRef.current);
+                    setAutoScroll(false);
+                    return;
+                }
+
+                el.scrollBy({ top: scrollStep, behavior: "smooth" });
             }, 100);
         } else {
             clearInterval(scrollTimerRef.current);
         }
+
         return () => clearInterval(scrollTimerRef.current);
     }, [autoScroll]);
 
