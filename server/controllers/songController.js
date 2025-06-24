@@ -40,11 +40,26 @@ export const searchSongs = (req, res) => {
 };
 
 // Load full song content by file name
-export const getSongByFileName = (req, res) => {
-    const fileName = req.params.file;
-    const songPath = path.join(__dirname, "..", "data", fileName);
+export const getSongByFileName = async (req, res) => {
+    const songNameParam = req.params.file?.toLowerCase();
+    const indexPath = path.join(__dirname, "..", "data", "songsIndex.json");
 
     try {
+        const indexRaw = fs.readFileSync(indexPath, "utf-8");
+        const index = JSON.parse(indexRaw);
+
+        const matchedSong = index.find((song) => {
+            const name = song.name?.toLowerCase();
+            return name === songNameParam;
+        });
+
+        if (!matchedSong) {
+            return res.status(404).json({ message: "Song not found in index" });
+        }
+
+        const fileName = matchedSong.fileName;
+        const songPath = path.join(__dirname, "..", "data", fileName);
+
         if (!fs.existsSync(songPath)) {
             return res.status(404).json({ message: "Song file not found" });
         }
@@ -52,11 +67,15 @@ export const getSongByFileName = (req, res) => {
         const songContent = fs.readFileSync(songPath, "utf-8");
         const song = JSON.parse(songContent);
 
-        res.status(200).json(song);
+        res.status(200).json({
+            content: song,
+            name: matchedSong.name,
+            artist: matchedSong.artist || "Unknown Artist"
+        });
     } catch (error) {
-        console.error("Error reading song file:", error);
+        console.error("Error loading song:", error);
         res.status(500).json({
-            message: "Error reading song",
+            message: "Error loading song",
             error: error.message
         });
     }
