@@ -40,7 +40,7 @@
 ## 🔐 Admin Access
 
 To create an admin account, go to:  
-👉 [`/admin/register`](https://ja-moveo-two.vercel.app/admin/register)  
+👉 [`/register/admin`](https://ja-moveo-two.vercel.app/register/admin)  
 Use the following admin code:  
 ```
 MOVEO-2025-ADMIN
