@@ -20,7 +20,7 @@ export default function SongCard({ song }) {
                 {/* Content Row */}
                 <div className='flex items-start gap-4'>
                     <img
-                        src={imageUrl || "/public/songPlaceholder.png"}
+                        src={imageUrl || "/songPlaceholder.png"}
                         alt={name}
                         className='w-24 h-24 rounded-md border border-gray-300 object-cover flex-shrink-0'
                     />

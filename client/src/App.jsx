@@ -3,6 +3,7 @@ import RegisterPage from "./pages/registerPage";
 import LoginPage from "./pages/loginPage";
 import MainPageAdmin from "./pages/mainPageAdmin";
 import ResultsPage from "./pages/resultsPage";
+import LiveRoomPage from "./pages/liveRoomPage";
 
 export default function App() {
     return (
@@ -31,6 +32,10 @@ export default function App() {
                 <Route
                     path='/results'
                     element={<ResultsPage />}
+                />
+                <Route
+                    path='/live'
+                    element={<LiveRoomPage />}
                 />
             </Routes>
         </BrowserRouter>
