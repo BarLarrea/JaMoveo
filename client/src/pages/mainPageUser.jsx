@@ -9,12 +9,11 @@ export default function MainPageUser() {
 
     useEffect(() => {
         socket.on("song-selected", (song) => {
-            navigate(`/liveRoom?song=${song.file}`);
+            if (!song?.fileName) return;
+            navigate(`/live?song=${encodeURIComponent(song.fileName)}`);
         });
 
-        return () => {
-            socket.off("song-selected");
-        };
+        return () => socket.off("song-selected");
     }, [navigate]);
 
     return (

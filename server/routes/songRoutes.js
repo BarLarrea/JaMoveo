@@ -9,6 +9,6 @@ const router = express.Router();
 
 router.get("/", authenticateToken, isAdmin, searchSongs);
 
-router.get("/:file", authenticateToken, isAdmin, getSongByFileName);
+router.get("/:file", authenticateToken, getSongByFileName);
 
 export default router;

@@ -16,16 +16,15 @@ export default function ResultsPage() {
 
     useEffect(() => {
         socket.on("song-selected", (song) => {
-            navigate(`/live?song=${encodeURIComponent(song.name)}`);
+            console.log("Received song from socket:", song);
+            if (!song?.fileName) return;
+            navigate(`/live?song=${encodeURIComponent(song.fileName)}`);
         });
-
-        return () => {
-            socket.off("song-selected");
-        };
+        return () => socket.off("song-selected");
     }, [navigate]);
 
     const handleSongSelect = (song) => {
-        socket.emit("select-song", song);
+        socket.emit("select-song", { fileName: song.fileName });
     };
 
     // Fetch songs from the backend based on search query

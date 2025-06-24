@@ -48,10 +48,9 @@ export const getSongByFileName = async (req, res) => {
         const indexRaw = fs.readFileSync(indexPath, "utf-8");
         const index = JSON.parse(indexRaw);
 
-        const matchedSong = index.find((song) => {
-            const name = song.name?.toLowerCase();
-            return name === songNameParam;
-        });
+        const matchedSong = index.find(
+            (song) => song.fileName?.toLowerCase() === songNameParam
+        );
 
         if (!matchedSong) {
             return res.status(404).json({ message: "Song not found in index" });

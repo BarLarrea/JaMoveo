@@ -30,14 +30,10 @@ export default function handleSocket(io) {
             socket.emit("song-selected", currentSong);
         }
 
-        socket.on("select-song", (data) => {
-            // Only admin can select a song
-            if (!socket.user?.isAdmin) {
-                return socket.emit("error", "Only admin can select songs.");
-            }
-
-            currentSong = data;
-            io.emit("song-selected", data);
+        socket.on("select-song", ({ fileName }) => {
+            if (!socket.user?.isAdmin) return;
+            currentSong = { fileName };
+            io.emit("song-selected", currentSong);
         });
 
         socket.on("quit", () => {

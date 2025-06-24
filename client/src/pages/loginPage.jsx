@@ -46,16 +46,15 @@ export default function LoginPage() {
             // Set token in localStorage
             localStorage.setItem("token", token);
 
-            // Set token to socket and connect
-            socket.auth.token = token;
-            socket.connect();
-
             try {
                 const decodedToken = jwtDecode(token);
                 const isAdmin = decodedToken?.isAdmin;
+                socket.auth.token = token;
                 if (isAdmin) {
+                    socket.connect();
                     navigate("/mainPageAdmin");
                 } else {
+                    socket.connect();
                     navigate("/mainPageUser");
                 }
             } catch (error) {

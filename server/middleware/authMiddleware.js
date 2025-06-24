@@ -17,6 +17,7 @@ export const authenticateToken = (req, res, next) => {
 
 // Check if the user is an admin
 export const isAdmin = (req, res, next) => {
+    console.log("Checking if user is admin:", req.user);
     if (!req.user?.isAdmin) {
         return res.status(403).json({ message: "Access denied: Admins only" });
     }
