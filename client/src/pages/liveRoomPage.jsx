@@ -57,7 +57,7 @@ export default function LiveRoomPage() {
 
     useEffect(() => {
         if (autoScroll) {
-            const scrollStep = window.innerWidth < 640 ? 4 : 2;
+            const scrollStep = window.innerWidth < 640 ? 8 : 2;
             scrollTimerRef.current = setInterval(() => {
                 scrollAreaRef.current?.scrollBy({
                     top: scrollStep,
