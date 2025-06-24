@@ -6,6 +6,7 @@ import Layout from "../components/layout/Layout";
 import SongCard from "../components/cards/SongCard";
 import socket from "../socket";
 import { useNavigate } from "react-router-dom";
+import { songsApiUrl, renderBackendURL } from "../constants/urls";
 
 export default function ResultsPage() {
     const location = useLocation();
@@ -31,7 +32,7 @@ export default function ResultsPage() {
     const fetchSongs = async (searchQuery) => {
         try {
             const response = await axios.get(
-                `http://localhost:3000/api/songs`,
+                `${renderBackendURL}${songsApiUrl}`,
                 {
                     params: { query: searchQuery },
                     headers: {
