@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import RegisterForm from "../components/forms/RegisterForm";
 import Layout from "../components/layout/Layout";
 import { Link } from "react-router-dom";
+import Spinner from "../components/ui/Spinner";
 
 export default function RegisterPage() {
     const [formData, setFormData] = useState({
@@ -42,7 +43,7 @@ export default function RegisterPage() {
             return;
         }
 
-        // API call to register 
+        // API call to register
         const response = await registerUser({ ...formData, isAdmin });
 
         if (response?.success) {
@@ -54,6 +55,14 @@ export default function RegisterPage() {
 
         setLoading(false);
     };
+
+    if (loading) {
+        return (
+            <Layout>
+                <Spinner message='Registering...' />
+            </Layout>
+        );
+    }
 
     return (
         <Layout>
