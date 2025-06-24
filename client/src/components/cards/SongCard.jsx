@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import socket from "../../socket";
 
 export default function SongCard({ song }) {
     const { name, artist, imageUrl } = song;
     const [showConfirm, setShowConfirm] = useState(false);
-    const navigate = useNavigate();
 
     const handleConfirm = () => {
         setShowConfirm(false);
-        navigate(`/live?song=${encodeURIComponent(name)}`);
+        socket.emit("select-song", song);
     };
 
     return (

@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import RegisterPage from "./pages/registerPage";
 import LoginPage from "./pages/loginPage";
 import MainPageAdmin from "./pages/mainPageAdmin";
+import MainPageUser from "./pages/mainPageUser";
 import ResultsPage from "./pages/resultsPage";
 import LiveRoomPage from "./pages/liveRoomPage";
 
@@ -28,6 +29,10 @@ export default function App() {
                 <Route
                     path='/mainPageAdmin'
                     element={<MainPageAdmin />}
+                />
+                <Route
+                    path='/mainPageUser'
+                    element={<MainPageUser />}
                 />
                 <Route
                     path='/results'

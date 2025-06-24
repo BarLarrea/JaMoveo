@@ -80,7 +80,6 @@ export const registerUser = async (req, res) => {
             password: hashedPassword
         });
 
-        const token = generateAccessToken(newUser);
         const savedUser = await newUser.save();
 
         // Response
@@ -93,8 +92,7 @@ export const registerUser = async (req, res) => {
                 bandRole: savedUser.bandRole,
                 instrument: savedUser.instrument,
                 email: savedUser.email
-            },
-            token
+            }
         });
     } catch (error) {
         console.error("Registration error:", error);

@@ -5,6 +5,7 @@ import { useNavigate, Link } from "react-router-dom";
 import LoginForm from "../components/forms/LoginForm";
 import Layout from "../components/layout/Layout";
 import { jwtDecode } from "jwt-decode";
+import socket from "../socket";
 
 export default function LoginPage() {
     const [loading, setLoading] = useState(false);
@@ -42,14 +43,18 @@ export default function LoginPage() {
                 return;
             }
 
+            // Set token in localStorage
             localStorage.setItem("token", token);
 
             try {
                 const decodedToken = jwtDecode(token);
                 const isAdmin = decodedToken?.isAdmin;
+                socket.auth.token = token;
                 if (isAdmin) {
+                    socket.connect();
                     navigate("/mainPageAdmin");
                 } else {
+                    socket.connect();
                     navigate("/mainPageUser");
                 }
             } catch (error) {

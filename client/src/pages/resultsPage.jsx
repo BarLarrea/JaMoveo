@@ -1,17 +1,31 @@
-"use client";
-
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 import Spinner from "../components/ui/Spinner";
 import Layout from "../components/layout/Layout";
 import SongCard from "../components/cards/SongCard";
+import socket from "../socket";
+import { useNavigate } from "react-router-dom";
 
 export default function ResultsPage() {
     const location = useLocation();
     const [query, setQuery] = useState("");
     const [songs, setSongs] = useState([]);
     const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        socket.on("song-selected", (song) => {
+            console.log("Received song from socket:", song);
+            if (!song?.fileName) return;
+            navigate(`/live?song=${encodeURIComponent(song.fileName)}`);
+        });
+        return () => socket.off("song-selected");
+    }, [navigate]);
+
+    const handleSongSelect = (song) => {
+        socket.emit("select-song", { fileName: song.fileName });
+    };
 
     // Fetch songs from the backend based on search query
     const fetchSongs = async (searchQuery) => {
@@ -54,41 +68,52 @@ export default function ResultsPage() {
 
     return (
         <Layout>
-            {/* Page title and subtitle */}
-            <div className='mb-6'>
-                <h1 className='text-2xl font-bold text-gray-800 mb-2'>
-                    Search Results
-                </h1>
-                {query && (
-                    <p className='text-gray-600'>
-                        Results for:{" "}
-                        <span className='font-semibold'>"{query}"</span>
-                    </p>
+            <div className='max-w-3xl w-full mx-auto px-6 py-8 space-y-6'>
+                {/* Page title and subtitle */}
+                <div className='text-left'>
+                    <h1 className='text-3xl font-bold text-gray-800'>
+                        Search Results
+                    </h1>
+                    {query && (
+                        <p className='text-gray-600 mt-1'>
+                            Results for:{" "}
+                            <span className='font-semibold'>"{query}"</span>
+                        </p>
+                    )}
+                </div>
+
+                {/* Show loading spinner while fetching */}
+                {loading ? (
+                    <Spinner message='Searching your song...' />
+                ) : songs.length > 0 ? (
+                    // Display results
+                    <div className='flex flex-col gap-4'>
+                        {songs.map((song, idx) => (
+                            <SongCard
+                                key={idx}
+                                song={song}
+                                onSelect={handleSongSelect}
+                            />
+                        ))}
+                    </div>
+                ) : (
+                    // Fallback message when no songs match
+                    <div className='text-center text-gray-500 py-8'>
+                        <p className='text-lg font-medium'>No songs found.</p>
+                        <p className='text-sm mt-2'>
+                            Try searching with different keywords.
+                        </p>
+                        <div className='mt-6'>
+                            <button
+                                onClick={() => navigate("/mainPageAdmin")}
+                                className='text-blue-600 hover:underline text-sm font-medium opacity-70 hover:opacity-100 transition'
+                            >
+                                ← Back to Search
+                            </button>
+                        </div>
+                    </div>
                 )}
             </div>
-
-            {/* Show loading spinner while fetching */}
-            {loading ? (
-                <Spinner message='Searching your song...' />
-            ) : songs.length > 0 ? (
-                // Display results as a list with full width cards
-                <div className='flex flex-col gap-4 w-full'>
-                    {songs.map((song, idx) => (
-                        <SongCard
-                            key={idx}
-                            song={song}
-                        />
-                    ))}
-                </div>
-            ) : (
-                // Fallback message when no songs match
-                <div className='text-center text-gray-500 py-8'>
-                    <p className='text-lg'>No songs found.</p>
-                    <p className='text-sm mt-2'>
-                        Try searching with different keywords.
-                    </p>
-                </div>
-            )}
         </Layout>
     );
 }
