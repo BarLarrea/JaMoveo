@@ -1,8 +1,6 @@
-# JaMoveo
-
 # 🎵 JaMoveo – Real-Time Band Rehearsal Web App
 
-**JaMoveo** is a full-stack web application that allows musicians to rehearse together in real time. Each participant connects via phone or desktop, selects an instrument, and views a synchronized live session controlled by an admin.
+**JaMoveo** is a full-stack web application that allows musicians to rehearse together in real time. Each participant connects via phone or desktop, selects a role, and views a synchronized live session controlled by an admin.
 
 ---
 
@@ -16,42 +14,47 @@
 ## 👥 User Types
 
 ### 🎶 Regular Users (Players)
-- Register via: /register
+- Register via: `/register`
 - Choose your role:
-- If you're a singer, you do not need to choose an instrument.
-- If you're a player, you must select an instrument.
+  - If you're a **singer**, you do **not** need to choose an instrument.
+  - If you're a **player**, you **must** select an instrument.
 - During a live session:
-  - Singers see only the lyrics.
-  - Players see both lyrics and chords.
+  - **Singers** see only the lyrics.
+  - **Players** see both **lyrics and chords**.
 
 ### 🎛️ Admins
 - Register via a dedicated URL: `/admin/register`
-- Must enter a **secret admin code** for verification
-- When signing up, an admin can choose to have no role, or act as an admin who is also a singer or a player
+- Must enter a **secret admin code** for verification.
+- When signing up, an admin can:
+  - Have no role at all,
+  - Be a singer,
+  - Or be a player (with an instrument).
 - Can:
-  - Search for songs (supports Hebrew & English; contain search by song title or artist)
+  - Search for songs (supports Hebrew & English; **contain search** by song title or artist)
   - Choose a song and broadcast it to all connected users
   - Toggle auto-scrolling of lyrics
   - Quit the session for everyone
-  
+
 ---
 
 ## 🔐 Admin Access
 
-To create an admin account, navigate to:
-
-https://ja-moveo-two.vercel.app/admin/register
-You must enter the following admin code when prompted:
-
+To create an admin account, go to:  
+👉 [`/admin/register`](https://ja-moveo-two.vercel.app/admin/register)  
+Use the following admin code:  
+```
 MOVEO-2025-ADMIN
+```
 
 ---
 
 ## 📦 Project Structure
 
+```
 JaMoveo/
-├── client/ # React frontend (Vercel)
-├── server/ # Node.js backend (Render)
+├── client/   # React frontend (Vercel)
+└── server/   # Node.js backend (Render)
+```
 
 ---
 
@@ -70,12 +73,13 @@ JaMoveo/
 ## 🔄 Behavior Overview
 
 - **Before song selection:**  
-  Players see “Waiting for next song”.
+  Users see “Waiting for next song”.
 
 - **After admin selects a song:**  
   - All users are routed to the **Live Room**.
-  - Players see lyrics + chords (except singers).
-  - Admin controls scroll and can end the session.
+  - Singers see lyrics only.
+  - Players see lyrics + chords.
+  - Admin controls scrolling and can quit the session.
 
 - **Song Display:**  
   - Large fonts & high contrast (designed for smoke-filled rooms).
@@ -85,43 +89,56 @@ JaMoveo/
 
 ## ⚙️ Environment Variables
 
-### Frontend (`.env`)
+### 🔹 Frontend (`client/.env`)
 ```env
 VITE_API_BASE_URL=https://jamoveo-3gek.onrender.com
-Backend (.env)
+```
+
+### 🔹 Backend (`server/.env`)
+```env
 PORT=3000
 MONGO_URI=your_mongo_uri
 ACCESS_JWT_SECRET=your_jwt_secret
-ACCESS_JWT_EXPIRATION= $@h
+ACCESS_JWT_EXPIRATION=12h
 ADMIN_SECRET=MOVEO-2025-ADMIN
-(In Render, this is set using Secret Files or env variables panel)
+```
 
-📋 Deployment Notes
-Vercel (Frontend)
-Auto-deploys on push to main
+ℹ️ On Render, define the backend variables via the **Environment tab** or **Secret Files**.
 
-Uses .env for backend URL
+---
 
-Render (Backend)
-Runs with root set to server/
+## 🚀 Deployment Notes
 
-start command: node server.js
+### Vercel (Frontend)
+- Auto-deploys on push to `main`
+- Uses `.env` with backend base URL
 
-.env configured as secret file
+### Render (Backend)
+- Root directory is `server/`
+- Commands:
+  ```bash
+  npm install
+  node server.js
+  ```
+- `.env` stored as a secret file
 
-👣 Steps to Run Locally
-Clone the repo
+---
 
-Create .env files in client/ and server/ as described above
+## 👣 Running Locally
 
-In terminal:
+```bash
+# 1. Clone the repo
+git clone https://github.com/your-username/JaMoveo.git
 
-# Run backend
-cd server
+# 2. Setup backend
+cd JaMoveo/server
+cp .env.example .env
 npm install
 npm run dev
 
-# Run frontend
+# 3. Setup frontend
 cd ../client
+cp .env.example .env
 npm install
 npm run dev
+```
