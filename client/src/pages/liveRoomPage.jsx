@@ -9,6 +9,7 @@ import LyricsWithChords from "../components/liveRoom/LyricsWithChords";
 import LyricsOnly from "../components/liveRoom/LyricsOnly";
 import socket from "../socket";
 import { songsApiUrl, renderBackendURL } from "../constants/urls";
+import Spinner from "../components/ui/Spinner";
 
 export default function LiveRoomPage() {
     const location = useLocation();
@@ -100,14 +101,7 @@ export default function LiveRoomPage() {
     if (loading) {
         return (
             <Layout>
-                <div className='min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 flex items-center justify-center'>
-                    <div className='text-center'>
-                        <div className='animate-spin rounded-full h-16 w-16 border-b-2 border-white mx-auto mb-4' />
-                        <p className='text-2xl text-white font-medium'>
-                            Loading song...
-                        </p>
-                    </div>
-                </div>
+                <Spinner message='Loading song...' />
             </Layout>
         );
     }

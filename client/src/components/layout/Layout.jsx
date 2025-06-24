@@ -41,8 +41,8 @@ export default function Layout({ children }) {
             </header>
 
             {/* MAIN CONTENT */}
-            <main className='flex-1 flex items-center justify-center bg-slate-400'>
-                <div className='w-full max-w-md px-6 py-8 bg-white/80 backdrop-blur-sm rounded-xl shadow-2xl min-h-[calc(100vh-8rem)]'>
+            <main className='flex-1 flex items-center justify-center bg-slate-400 px-2 py-6'>
+                <div className='w-full max-w-sm sm:max-w-md px-4 py-6 bg-white/80 backdrop-blur-sm rounded-xl shadow-2xl min-h-[calc(100vh-14rem)]'>
                     {children}
                 </div>
             </main>
