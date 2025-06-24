@@ -57,7 +57,7 @@ export default function LiveRoomPage() {
 
     useEffect(() => {
         if (autoScroll) {
-            const scrollStep = window.innerWidth < 640 ? 8 : 2;
+            const scrollStep = window.innerWidth < 640 ? 12 : 2;
             scrollTimerRef.current = setInterval(() => {
                 scrollAreaRef.current?.scrollBy({
                     top: scrollStep,
@@ -154,6 +154,10 @@ export default function LiveRoomPage() {
                     onQuit={handleExit}
                 />
             )}
+
+            <div className='fixed bottom-4 right-4 bg-black/70 text-white text-sm px-2 py-1 rounded z-50'>
+                Width: {window.innerWidth}px
+            </div>
         </div>
     );
 }
