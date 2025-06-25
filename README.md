@@ -1,19 +1,19 @@
-# 🎵 JaMoveo – Real-Time Band Rehearsal Web App
+# JaMoveo – Real-Time Band Rehearsal Web App
 
 **JaMoveo** is a full-stack web application that allows musicians to rehearse together in real time. Each participant connects via phone or desktop, selects a role, and views a synchronized live session controlled by an admin.
 
 ---
 
-## 🌍 Live Deployments
+## Live Deployments
 
 - **Frontend:** [https://ja-moveo-two.vercel.app](https://ja-moveo-two.vercel.app)  
 - **Backend:** [https://jamoveo-3gek.onrender.com](https://jamoveo-3gek.onrender.com)
 
 ---
 
-## 👥 User Types
+## User Types
 
-### 🎶 Regular Users (Players)
+### Regular Users (Players)
 - Register via: `/register`
 - Choose your role:
   - If you're a **singer**, you do **not** need to choose an instrument.
@@ -22,7 +22,7 @@
   - **Singers** see only the lyrics.
   - **Players** see both **lyrics and chords**.
 
-### 🎛️ Admins
+### Admins
 - Register via a dedicated URL: `/admin/register`
 - Must enter a **secret admin code** for verification.
 - When signing up, an admin can:
@@ -37,10 +37,10 @@
 
 ---
 
-## 🔐 Admin Access
+## Admin Access
 
-To create an admin account, go to:  
-👉 [`/register/admin`](https://ja-moveo-two.vercel.app/register/admin)  
+To create an admin account, go to:
+[`/register/admin`](https://ja-moveo-two.vercel.app/register/admin)  
 Use the following admin code:  
 ```
 MOVEO-2025-ADMIN
@@ -48,7 +48,7 @@ MOVEO-2025-ADMIN
 
 ---
 
-## 📦 Project Structure
+## Project Structure
 
 ```
 JaMoveo/
@@ -70,7 +70,7 @@ JaMoveo/
 
 ---
 
-## 🔄 Behavior Overview
+## Behavior Overview
 
 - **Before song selection:**  
   Users see “Waiting for next song”.
@@ -87,14 +87,14 @@ JaMoveo/
 
 ---
 
-## ⚙️ Environment Variables
+## Environment Variables
 
-### 🔹 Frontend (`client/.env`)
+### Frontend (`client/.env`)
 ```env
 VITE_API_BASE_URL=https://jamoveo-3gek.onrender.com
 ```
 
-### 🔹 Backend (`server/.env`)
+### Backend (`server/.env`)
 ```env
 PORT=3000
 MONGO_URI=your_mongo_uri
@@ -103,11 +103,11 @@ ACCESS_JWT_EXPIRATION=12h
 ADMIN_SECRET=MOVEO-2025-ADMIN
 ```
 
-ℹ️ On Render, define the backend variables via the **Environment tab** or **Secret Files**.
+On Render, define the backend variables via the **Environment tab** or **Secret Files**.
 
 ---
 
-## 🚀 Deployment Notes
+## Deployment Notes
 
 ### Vercel (Frontend)
 - Auto-deploys on push to `main`
@@ -124,7 +124,7 @@ ADMIN_SECRET=MOVEO-2025-ADMIN
 
 ---
 
-## 👣 Running Locally
+## Running Locally
 
 ```bash
 # 1. Clone the repo
