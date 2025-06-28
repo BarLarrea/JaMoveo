@@ -23,7 +23,7 @@
   - **Players** see both **lyrics and chords**.
 
 ### Admins
-- Register via a dedicated URL: `/admin/register`
+- Register via a dedicated URL: `/register/admin`
 - Must enter a **secret admin code** for verification.
 - When signing up, an admin can:
   - Have no role at all,
